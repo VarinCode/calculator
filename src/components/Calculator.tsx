@@ -32,7 +32,7 @@ const Calculator = (): ReactElement => {
       // console.log(r);
       if (isNaN(r)) {
         throw new Error("ไม่สามารถหาค่าได้");
-      } else if (!isFinite(r) || numbers[numbers.length - 1] === "0") {
+      } else if (!isFinite(r)) {
         throw new Error("ไม่สามารถหารด้วย 0 ได้");
       } else {
         setResult(r.toString());
