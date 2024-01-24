@@ -2,8 +2,6 @@ import { JSX } from "react"
 import Container from './components/Container';
 import Calculator from './components/Calculator';
 
-import '@fontsource-variable/anuphan';
-
 const App = ():JSX.Element => {
   return (
     <main className='relative w-full h-full'>

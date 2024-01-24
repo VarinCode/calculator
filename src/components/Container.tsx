@@ -1,8 +1,5 @@
-import { ReactNode, FC, ReactElement} from 'react'
-
-interface ContainerProps {
-    children: ReactNode;
-}
+import { FC, ReactElement} from 'react'
+import { ContainerProps } from "../model/model"
 
 const Container:FC<ContainerProps> = ({ children }):ReactElement => {
   return (

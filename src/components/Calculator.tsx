@@ -1,21 +1,18 @@
 import { useState, ReactElement } from "react";
 import { Button, ButtonResult, ButtonDeleteAll, ButtonDelete } from "./Button";
-
+import { MySwal } from "../model/model";
 import uuid from "react-uuid";
-import Swal from "sweetalert2";
-import withReactContent, { ReactSweetAlert } from "sweetalert2-react-content";
-export const MySwal: ReactSweetAlert = withReactContent(Swal);
 
-import Data, {
-  data as getData,
+import CalculatorData, {
+  calculator as getCalculator,
   T_Generic,
   D_Generic,
   A_Generic,
 } from "../model/model";
 
 const Calculator = (): ReactElement => {
-  const data: Data<T_Generic, D_Generic, A_Generic> = getData;
-
+  const [data, setData] =
+    useState<CalculatorData<T_Generic, D_Generic, A_Generic>>(getCalculator);
   const [numbers, setNumbers] = useState<string>("");
   const [result, setResult] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(false);
@@ -24,6 +21,7 @@ const Calculator = (): ReactElement => {
     setCompleted(false);
     setResult("");
     setNumbers("");
+    setData;
   };
 
   const calculate = (): void => {
@@ -45,7 +43,7 @@ const Calculator = (): ReactElement => {
         icon: "error",
         showConfirmButton: false,
         timer: 1800,
-      }).then(():void => clearNumber());
+      }).then((): void => clearNumber());
     }
   };
 
