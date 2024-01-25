@@ -1,12 +1,10 @@
 import { FC, ReactElement } from "react";
 import { MySwal } from "../model/model";
-import { RiDeleteBack2Fill } from "react-icons/ri";
-import { TbHttpDelete } from "react-icons/tb";
 import {
-  btnDefaultStyle,
+  defaultStyle,
   ButtonProps,
+  ButtonOperatorProps,
   ButtonResultProps,
-  ButtonDeleteAllProps,
   ButtonDeleteProps,
 } from "../model/model";
 
@@ -14,49 +12,73 @@ export const Button: FC<ButtonProps> = ({
   text,
   value,
   style,
-  isRoot,
-  callback,
-  numbers,
   setNumbers,
   setCompleted,
-  setResult,
 }): ReactElement => (
   <button
-    className={`${btnDefaultStyle} ${style}`}
+    className={`${defaultStyle.button} ${style}`}
     onClick={(): void => {
-      if (isRoot && typeof callback !== "undefined") {
-        let result: number = callback(parseInt(numbers));
-        if (isNaN(result)) {
-          MySwal.fire({
-            title: "เกิดข้อผิดพลาดขึ้น",
-            text: "ไม่สารามาถหาค่าได้",
-            icon: "error",
-            showConfirmButton: false,
-            timer: 1800,
-          });
-        } else {
-          setResult(result.toString());
-          setNumbers(result.toString());
-          setCompleted(true);
-        }
-      } else {
-        setNumbers((prevVal: string): string => `${prevVal + value}`);
-        setCompleted(false);
-      }
+      setNumbers((prevVal: string): string => `${prevVal + value}`);
+      setCompleted(false);
     }}
   >
     {text}
   </button>
 );
 
+export const ButtonOperator: FC<ButtonOperatorProps> = ({
+  text,
+  icon,
+  value,
+  style,
+  isIcon,
+  isRoot,
+  callback,
+  numbers,
+  setNumbers,
+  setCompleted,
+  setResult,
+}): ReactElement => {
+  return (
+    <button
+      className={`${defaultStyle.button} ${style}`}
+      onClick={(): void => {
+        // สำหรับกดปุ่ม root
+        if (isRoot && typeof callback !== "undefined") {
+          let result: number = callback(parseInt(numbers));
+          if (isNaN(result)) {
+            MySwal.fire({
+              title: "เกิดข้อผิดพลาดขึ้น",
+              text: "ไม่สารามาถหาค่าได้",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 1800,
+            });
+          } else {
+            setResult(result.toString());
+            setNumbers(result.toString());
+            setCompleted(true);
+          }
+        }
+        // สำหรับกดปุ่มเครื่องหมายทั่วไป
+        else {
+          setNumbers((prevVal: string): string => `${prevVal + value}`);
+          setCompleted(false);
+        }
+      }}
+    >
+      {isIcon && isIcon !== undefined ? icon : text}
+    </button>
+  );
+};
+
 export const ButtonResult: FC<ButtonResultProps> = ({
   text,
-  style,
   calculate,
   setCompleted,
 }): ReactElement => (
   <button
-    className={`${btnDefaultStyle} ${style}`}
+    className={`${defaultStyle.button} w-full font-bold bg-emerald-700 text-3xl text-slate-50 hover:bg-emerald-800`}
     onClick={(): void => {
       calculate();
       setCompleted(true);
@@ -66,30 +88,16 @@ export const ButtonResult: FC<ButtonResultProps> = ({
   </button>
 );
 
-export const ButtonDeleteAll: FC<ButtonDeleteAllProps> = ({
-  style,
-  clearNumber,
-}): ReactElement => (
-  <button className={`${btnDefaultStyle} ${style}`} onClick={clearNumber}>
-    <TbHttpDelete className="mx-auto text-4xl" />
-  </button>
-);
-
 export const ButtonDelete: FC<ButtonDeleteProps> = ({
-  style,
-  numbers,
-  setNumbers,
-  setCompleted,
+  icon,
+  callback,
 }): ReactElement => {
-  const delDigit = (): void => {
-    let num: string[] = [...numbers];
-    num.pop();
-    setNumbers(num.join(""));
-    setCompleted(false);
-  };
   return (
-    <button className={`${btnDefaultStyle} ${style} `} onClick={delDigit}>
-      <RiDeleteBack2Fill className=" text-2xl mx-auto" />
+    <button
+      className={`${defaultStyle.button} bg-red-600 hover:bg-red-700 hover:text-slate-50`}
+      onClick={callback}
+    >
+      {icon}
     </button>
   );
 };
